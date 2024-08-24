@@ -1,19 +1,27 @@
 import React from 'react';
-import useRecipeStore from '../store/recipeStore'; // Adjust the path as needed
+import useRecipeStore from '../store/recipeStore'; // Adjust path as necessary
 
 const FavoritesList = () => {
   const recipes = useRecipeStore(state => state.recipes);
-  const favorites = useRecipeStore(state => state.favorites);
-  const favoriteRecipes = favorites.map(id => recipes.find(recipe => recipe.id === id));
+  const favoriteIds = useRecipeStore(state => state.favorites);
+
+  const favorites = recipes.filter(recipe => favoriteIds.includes(recipe.id));
 
   return (
     <div>
       <h2>My Favorites</h2>
-      {favoriteRecipes.length === 0 ? (
+      {favorites.length === 0 ? (
         <p>No favorite recipes.</p>
       ) : (
-        favoriteRecipes.map(recipe => (
+        favorites.map(recipe => (
           <div key={recipe.id}>
             <h3>{recipe.title}</h3>
             <p>{recipe.description}</p>
-            {/* Add
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
+
+export default FavoritesList;
