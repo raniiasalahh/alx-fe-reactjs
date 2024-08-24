@@ -1,40 +1,51 @@
 import create from 'zustand';
 
 const useRecipeStore = create((set) => ({
-  recipes: [], // List of recipes
-  favorites: [], // List of favorite recipe IDs
-  searchTerm: '', // Term for search filtering
-  filteredRecipes: [], // Filtered recipes based on search term
-  recommendations: [], // List of recommended recipes
+  recipes: [],
+  favorites: [],
+  searchTerm: '',
+  filteredRecipes: [],
+  recommendations: [],
 
-  // Add a new recipe to the recipes list
+  // Add a new recipe
   addRecipe: (newRecipe) => set((state) => ({
     recipes: [...state.recipes, newRecipe],
   })),
 
-  // Set recipes with an initial value (e.g., loading from an API)
+  // Set initial recipes
   setRecipes: (recipes) => set({ recipes }),
 
-  // Add a recipe to the favorites list
+  // Delete a recipe by ID
+  deleteRecipe: (recipeId) => set((state) => ({
+    recipes: state.recipes.filter((recipe) => recipe.id !== recipeId),
+  })),
+
+  // Update an existing recipe by ID
+  updateRecipe: (updatedRecipe) => set((state) => ({
+    recipes: state.recipes.map((recipe) =>
+      recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+    ),
+  })),
+
+  // Add a recipe to favorites
   addFavorite: (recipeId) => set((state) => ({
     favorites: [...state.favorites, recipeId],
   })),
 
-  // Remove a recipe from the favorites list
+  // Remove a recipe from favorites
   removeFavorite: (recipeId) => set((state) => ({
     favorites: state.favorites.filter((id) => id !== recipeId),
   })),
 
   // Generate recommendations based on favorites
   generateRecommendations: () => set((state) => {
-    // Example recommendation logic
     const recommended = state.recipes.filter((recipe) =>
       state.favorites.includes(recipe.id) && Math.random() > 0.5
     );
     return { recommendations: recommended };
   }),
 
-  // Update the search term for filtering recipes
+  // Set search term and filter recipes
   setSearchTerm: (term) => {
     set({ searchTerm: term });
     set((state) => ({
@@ -44,7 +55,7 @@ const useRecipeStore = create((set) => ({
     }));
   },
 
-  // Filter recipes based on the current search term
+  // Filter recipes based on search term
   filterRecipes: () => set((state) => ({
     filteredRecipes: state.recipes.filter((recipe) =>
       recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
