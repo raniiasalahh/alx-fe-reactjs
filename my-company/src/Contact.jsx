@@ -4,7 +4,7 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
 
   const handleChange = (e) => {
