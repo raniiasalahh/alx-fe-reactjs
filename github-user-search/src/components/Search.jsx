@@ -26,25 +26,30 @@ const Search = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="container mx-auto p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <input
           type="text"
           value={username}
           onChange={handleInputChange}
           placeholder="Enter GitHub username"
+          className="mb-4 p-2 border border-gray-300 rounded"
         />
-        <button type="submit">Search</button>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+          Search
+        </button>
       </form>
       {loading && <p>Loading...</p>}
       {error && <p>Looks like we can't find the user.</p>}
       {userData && (
-        <div>
-          <img src={userData.avatar_url} alt="User Avatar" />
+        <div className="mt-4 p-4 border border-gray-300 rounded">
+          <img src={userData.avatar_url} alt="User Avatar" className="w-16 h-16 rounded-full" />
           <p>Name: {userData.name}</p>
           <p>Username: {userData.login}</p>
           <p>Bio: {userData.bio}</p>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">View Profile</a>
+          <a href={userData.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+            View Profile
+          </a>
         </div>
       )}
     </div>
